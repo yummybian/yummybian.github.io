@@ -297,6 +297,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/09/在k8s中如何使用GPU/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Bin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/09/在k8s中如何使用GPU/" itemprop="url">在k8s中如何使用GPU</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T17:09:15+08:00">
+                2017-11-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/09/在k8s中如何使用GPU/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/09/在k8s中如何使用GPU/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>部署<strong>All In One</strong> K8s，可以参考这位老兄<a href="http://stuartingram.com/2016/08/31/installing-kubernetes-on-ubuntu-14-04/" target="_blank" rel="external">文章</a>。</p>
+<h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><ul>
+<li>安装NVIDIA驱动，安装完成后运行<code>nvidia-docker-plugin</code>来确认驱动是否被正确的加载。</li>
+<li>查看nvidia device信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -s localhost:3476/docker/cli</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="不通过nvidia-docker启动GPU容器"><a href="#不通过nvidia-docker启动GPU容器" class="headerlink" title="不通过nvidia-docker启动GPU容器"></a>不通过nvidia-docker启动GPU容器</h2><h3 id="手动指定驱动路径，然后挂载驱动和CUDA库"><a href="#手动指定驱动路径，然后挂载驱动和CUDA库" class="headerlink" title="手动指定驱动路径，然后挂载驱动和CUDA库"></a>手动指定驱动路径，然后挂载驱动和CUDA库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> DRIVER=<span class="string">'-v /var/lib/nvidia-docker/volumes/nvidia_driver/375.66:/usr/local/nvidia'</span></div><div class="line"><span class="built_in">export</span> CUDA_SO=$(\ls /usr/lib/x86_64-linux-gnu/libcuda.* | xargs -I&#123;&#125; <span class="built_in">echo</span> <span class="string">'--volume &#123;&#125;:&#123;&#125;'</span>)</div><div class="line"><span class="built_in">export</span> DEVICES=$(\ls /dev/nvidia* | xargs -I&#123;&#125; <span class="built_in">echo</span> <span class="string">'--device &#123;&#125;:&#123;&#125;'</span>)</div></pre></td></tr></table></figure>
+<h3 id="进入tf容器"><a href="#进入tf容器" class="headerlink" title="进入tf容器"></a>进入tf容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --rm -it <span class="variable">$DRIVER</span> <span class="variable">$CUDA_SO</span> <span class="variable">$DEVICES</span> tensorflow/tensorflow:1.2.1-devel-gpu-py3</div></pre></td></tr></table></figure>
+<h3 id="在tf容器中用nvidia-smi命令查看GPU信息"><a href="#在tf容器中用nvidia-smi命令查看GPU信息" class="headerlink" title="在tf容器中用nvidia-smi命令查看GPU信息"></a>在tf容器中用<code>nvidia-smi</code>命令查看GPU信息</h3><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-143028.png" alt="image-02"><br>可以看到两块GPU都已经正常映射</p>
+<h3 id="在tf容器中运行下面的代码，看tf是否能正常工作"><a href="#在tf容器中运行下面的代码，看tf是否能正常工作" class="headerlink" title="在tf容器中运行下面的代码，看tf是否能正常工作"></a>在tf容器中运行下面的代码，看tf是否能正常工作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="comment"># Creates a graph.</span></div><div class="line">a = tf.constant([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>], shape=[<span class="number">2</span>, <span class="number">3</span>], name=<span class="string">'a'</span>)</div><div class="line">b = tf.constant([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>], shape=[<span class="number">3</span>, <span class="number">2</span>], name=<span class="string">'b'</span>)</div><div class="line">c = tf.matmul(a, b)</div><div class="line"><span class="comment"># Creates a session with log_device_placement set to True.</span></div><div class="line">sess = tf.Session(config=tf.ConfigProto(log_device_placement=<span class="keyword">True</span>))</div><div class="line"><span class="comment"># Runs the op.</span></div><div class="line">print(sess.run(c))</div></pre></td></tr></table></figure>
+<h2 id="在k8s中使用GPU"><a href="#在k8s中使用GPU" class="headerlink" title="在k8s中使用GPU"></a>在k8s中使用GPU</h2><ul>
+<li><p>由于支持GPU是一个试验性的feature，故我们需要修改一下启动参数，在hack/local-up-cluster.sh中修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FEATURE_GATES=<span class="variable">$&#123;FEATURE_GATES:-"Accelerators=true"&#125;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>查看node所能提供的资源上限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubectl get nodes -o json | jq <span class="string">'.items[] | &#123;name: .metadata.name, cap: .status.capacity&#125;'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-140659.png" alt="image-02"><br>看到有两块GPU</p>
+<ul>
+<li>编写pod spec<blockquote>
+<p>有两个地方需要注意</p>
+</blockquote>
+</li>
+</ul>
+<ol>
+<li>挂载nvidia驱动和CUDA库。</li>
+<li>增加<code>&quot;alpha.kubernetes.io/nvidia-gpu&quot;: &quot;1&quot;</code>，表示申请1块GPU。<br><a href="https://gist.github.com/yummybian/60f185875a43778b8835468ec99ea3f3" target="_blank" rel="external">完整例子</a></li>
+</ol>
+<p>参考：<br><a href="https://medium.com/jim-fleming/running-tensorflow-on-kubernetes-ca00d0e67539" target="_blank" rel="external">Running TensorFlow (with GPU) on Kubernetes</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/04/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -469,14 +651,32 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
