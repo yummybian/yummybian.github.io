@@ -106,7 +106,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="机器学习,Sklearn,sklearn_pycon2015," />
 
 
 
@@ -117,13 +117,32 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Bin&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="This notebook was put together by Jake Vanderplas for PyCon 2015. Source and license info is on GitHub. 这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括">
+<meta name="keywords" content="机器学习,Sklearn,sklearn_pycon2015">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二篇 机器学习的基本方法">
+<meta property="og:url" content="http://yoursite.com/2017/11/09/02.2-Basic-Principles-zh/index.html">
 <meta property="og:site_name" content="Bin&#39;s Blog">
+<meta property="og:description" content="This notebook was put together by Jake Vanderplas for PyCon 2015. Source and license info is on GitHub. 这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-142927.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-142952.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143010.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143047.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143107.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143133.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143153.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/11/09/02.2-Basic-Principles-zh/output_48_0.png">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143219.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143237.jpg">
+<meta property="og:image" content="file:///Users/yummy/Desktop/02.2-Basic-Principles-zh/output_75_0.png">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143319.jpg">
+<meta property="og:image" content="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png">
+<meta property="og:updated_time" content="2017-11-09T14:37:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bin&#39;s Blog">
+<meta name="twitter:title" content="第二篇 机器学习的基本方法">
+<meta name="twitter:description" content="This notebook was put together by Jake Vanderplas for PyCon 2015. Source and license info is on GitHub. 这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括">
+<meta name="twitter:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-142927.jpg">
 
 
 
@@ -153,13 +172,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/09/02.2-Basic-Principles-zh/"/>
 
 
 
 
 
-  <title>Bin's Blog</title>
+  <title>第二篇 机器学习的基本方法 | Bin's Blog</title>
   
 
 
@@ -188,8 +207,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -292,9 +310,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -324,9 +342,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/09/02.2-Basic-Principles-zh/" itemprop="url">第二篇 机器学习的基本方法</a></h1>
+          <h1 class="post-title" itemprop="name headline">第二篇 机器学习的基本方法</h1>
         
 
         <div class="post-meta">
@@ -420,9 +436,7 @@
       
 
       
-        
-          
-            <p><small><i>This notebook was put together by <a href="http://www.vanderplas.com" target="_blank" rel="external">Jake Vanderplas</a> for PyCon 2015. Source and license info is on <a href="https://github.com/jakevdp/sklearn_pycon2015/" target="_blank" rel="external">GitHub</a>.</i></small></p>
+        <p><small><i>This notebook was put together by <a href="http://www.vanderplas.com" target="_blank" rel="external">Jake Vanderplas</a> for PyCon 2015. Source and license info is on <a href="https://github.com/jakevdp/sklearn_pycon2015/" target="_blank" rel="external">GitHub</a>.</i></small></p>
 <p>这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。</p>
 <p>在简单的介绍sklearn的<em>Estimator</em>对象后，我们会介绍<strong>监督学习</strong>，包括<strong>分类</strong>和<strong>回归</strong>问题，接下来<strong>无监督学习</strong>，包括<strong>降维</strong>和<strong>聚类</strong>问题。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"><span class="comment"># use seaborn for plot defaults</span></div><div class="line"><span class="comment"># this can be safely commented out</span></div><div class="line"><span class="keyword">import</span> seaborn; seaborn.set()</div><div class="line"></div><div class="line"><span class="comment"># eliminate warnings</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">warn</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="keyword">import</span> warnings</div><div class="line">warnings.warn = warn</div></pre></td></tr></table></figure>
@@ -645,8 +659,6 @@
 <hr>
 <p><a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png"></a><br>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议</a>进行许可。</p>
 
-          
-        
       
     </div>
     
@@ -661,468 +673,40 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/09/02.1-Machine-Learning-Intro-zh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="彬叔">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/09/02.1-Machine-Learning-Intro-zh/" itemprop="url">第一篇 介绍Scikit-Learn：用Python进行机器学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T21:36:15+08:00">
-                2017-11-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/机器学习/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
           
-
+            <a href="/tags/Sklearn/" rel="tag"># Sklearn</a>
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/09/02.1-Machine-Learning-Intro-zh/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/09/02.1-Machine-Learning-Intro-zh/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
+            <a href="/tags/sklearn-pycon2015/" rel="tag"># sklearn_pycon2015</a>
           
-
-          
-          
-             <span id="/2017/11/09/02.1-Machine-Learning-Intro-zh/" class="leancloud_visitors" data-flag-title="第一篇 介绍Scikit-Learn：用Python进行机器学习">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><small><i>This notebook was put together by <a href="http://www.vanderplas.com" target="_blank" rel="external">Jake Vanderplas</a> for PyCon 2015. Source and license info is on <a href="https://github.com/jakevdp/sklearn_pycon2015/" target="_blank" rel="external">GitHub</a>.</i></small></p>
-<p>这部分将覆盖基本Scikit-Learn（下面简称sklearn），它是一种Python实现的机器学习工具集。详见：<a href="http://scikit-learn.org" target="_blank" rel="external">http://scikit-learn.org</a></p>
-<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p><strong>主要目标</strong>：介绍机器学习核心概念，和如何使用sklearn包。</p>
-<ul>
-<li>机器学习的定义</li>
-<li>sklearn中的数据表示</li>
-<li>sklearn API介绍</li>
-</ul>
-<h2 id="关于Scikit-Learn"><a href="#关于Scikit-Learn" class="headerlink" title="关于Scikit-Learn"></a>关于Scikit-Learn</h2><p><a href="http://scikit-learn.org" target="_blank" rel="external">sklearn</a>用Python实现了许多众所周知的机器学习算法，并且提供清晰和成熟的API接口。全世界达数百人参与贡献了sklearn的代码，它在工业和学术界被大量应用。<br>sklearn基于<a href="www.numpy.org">NumPy</a>和<a href="http://scipy.org" target="_blank" rel="external">SciPy</a>，这两个库在数组处理和科学计算方面很强大。此外sklearn不适合大数据集处理，尽管在这方面已经做了一些<a href="https://github.com/ogrisel/parallel_ml_tutorial" target="_blank" rel="external">工作</a>。</p>
-<h1 id="什么是机器学习？"><a href="#什么是机器学习？" class="headerlink" title="什么是机器学习？"></a>什么是机器学习？</h1><p>在这部分我们将开始探索基本的机器学习规则。机器学习通过调整参数来学习已知的数据，从而建立模型来预测新的数据。机器学习作为人工智能的一个领域，通过某种程度的泛化使得计算机更加智能。</p>
-<p>这里我们将看一下两个非常简单的例子。第一个是<strong>分类</strong>,图片显示一个二维数据的集合，不同的颜色表示不同的分类。一个分类算法可以划分两种不同颜色的点集：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"></div><div class="line"><span class="comment"># set seaborn plot defaults.</span></div><div class="line"><span class="comment"># This can be safely commented out</span></div><div class="line"><span class="keyword">import</span> seaborn; seaborn.set()</div><div class="line"></div><div class="line"><span class="comment"># eliminate warnings</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">warn</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="keyword">import</span> warnings</div><div class="line">warnings.warn = warn</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Import the example plot from the figures directory</span></div><div class="line"><span class="keyword">from</span> fig_code <span class="keyword">import</span> plot_sgd_separator</div><div class="line">plot_sgd_separator()</div></pre></td></tr></table></figure>
-<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-133734.jpg" alt="png"></p>
-<p>这貌似像一个简单的任务，但大道至简。通过画出分割线形成模型，我们可以让这个模型泛化到新的数据集，它可以用来预测分割新的点集（红色和蓝色）。</p>
-<p>如果你想要查看源码，可以使用<code>%load</code>命令。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># %load fig_code/sgd_separator.py</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDClassifier</div><div class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_sgd_separator</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># we create 50 separable points</span></div><div class="line">    X, Y = make_blobs(n_samples=<span class="number">50</span>, centers=<span class="number">2</span>,</div><div class="line">                      random_state=<span class="number">0</span>, cluster_std=<span class="number">0.60</span>)</div><div class="line"></div><div class="line">    <span class="comment"># fit the model</span></div><div class="line">    clf = SGDClassifier(loss=<span class="string">"hinge"</span>, alpha=<span class="number">0.01</span>,</div><div class="line">                        n_iter=<span class="number">200</span>, fit_intercept=<span class="keyword">True</span>)</div><div class="line">    clf.fit(X, Y)</div><div class="line"></div><div class="line">    <span class="comment"># plot the line, the points, and the nearest vectors to the plane</span></div><div class="line">    xx = np.linspace(<span class="number">-1</span>, <span class="number">5</span>, <span class="number">10</span>)</div><div class="line">    yy = np.linspace(<span class="number">-1</span>, <span class="number">5</span>, <span class="number">10</span>)</div><div class="line"></div><div class="line">    X1, X2 = np.meshgrid(xx, yy)</div><div class="line">    Z = np.empty(X1.shape)</div><div class="line">    <span class="keyword">for</span> (i, j), val <span class="keyword">in</span> np.ndenumerate(X1):</div><div class="line">        x1 = val</div><div class="line">        x2 = X2[i, j]</div><div class="line">        p = clf.decision_function(np.array([[x1, x2]]))</div><div class="line">        Z[i, j] = p[<span class="number">0</span>]</div><div class="line">    levels = [<span class="number">-1.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>]</div><div class="line">    linestyles = [<span class="string">'dashed'</span>, <span class="string">'solid'</span>, <span class="string">'dashed'</span>]</div><div class="line">    colors = <span class="string">'k'</span></div><div class="line"></div><div class="line">    ax = plt.axes()</div><div class="line">    ax.contour(X1, X2, Z, levels, colors=colors, linestyles=linestyles)</div><div class="line">    ax.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=Y, cmap=plt.cm.Paired)</div><div class="line"></div><div class="line">    ax.axis(<span class="string">'tight'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    plot_sgd_separator()</div><div class="line">    plt.show()</div></pre></td></tr></table></figure>
-<p>下一个我们看下<strong>回归</strong>的例子，数据集的最佳拟合线</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fig_code <span class="keyword">import</span> plot_linear_regression</div><div class="line">plot_linear_regression()</div></pre></td></tr></table></figure>
-<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-133832.jpg" alt="png"></p>
-<p>我们又看到了一个拟合数据的模型，这个模型也可以泛化到新的数据。这个模型通过学习训练数据，从而预测测试集的结果：给它x值，它可以预测y值。</p>
-<h2 id="数据在Scikit-learn中的表示"><a href="#数据在Scikit-learn中的表示" class="headerlink" title="数据在Scikit-learn中的表示"></a>数据在Scikit-learn中的表示</h2><p>机器学习通过数据建立模型，基于这点，我们开始讨论，数据如何表示才能让计算机可以理解。我们将举一些matplotlib的例子并且可视化它们。</p>
-<p>在sklearn中的大多数机器学习算法的数据存储在二维的数组或者矩阵中。有的采用<code>numpy arrays</code>，还有的采用<code>scipy.sparse</code>矩阵。数组的大小设定为<code>[n_samples, n_features]</code></p>
-<ul>
-<li><strong>n_samples:</strong> 样本的个数，每个样本是待处理的一项数据。它可以是一篇文档，一张图片，一段音频，一段视频，数据库或CSV文件中的某一行，甚至一个你能描述其特征的可量化的集合。</li>
-<li><strong>n_features</strong> 特征的数目，用一种可以量化的方式来描述每一个样本的特征数目。它一般是实数，在一些场合下可以为布尔值或者离散的数值。</li>
-</ul>
-<p>特征的数量必须是提前确定的。它可能有很高的维度（例如：上百万的维度），其中一些样本中大部分的特征值为零。在这种场景下scipy.sparse矩阵就很有用了，它比numpy arrays更加节约内存。</p>
-<h2 id="一个简单的例子：Iris（鸢尾花）数据集"><a href="#一个简单的例子：Iris（鸢尾花）数据集" class="headerlink" title="一个简单的例子：Iris（鸢尾花）数据集"></a>一个简单的例子：Iris（鸢尾花）数据集</h2><p>在这个例子中，我们将看一下存储在sklearn中的iris数据。这个数据集包含三种不同种类的iris测量值。让我们看下下图：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> Image, display</div><div class="line">display(Image(filename=<span class="string">'images/iris_setosa.jpg'</span>))</div><div class="line">print(<span class="string">"Iris Setosa\n"</span>)</div><div class="line"></div><div class="line">display(Image(filename=<span class="string">'images/iris_versicolor.jpg'</span>))</div><div class="line">print(<span class="string">"Iris Versicolor\n"</span>)</div><div class="line"></div><div class="line">display(Image(filename=<span class="string">'images/iris_virginica.jpg'</span>))</div><div class="line">print(<span class="string">"Iris Virginica"</span>)</div></pre></td></tr></table></figure>
-<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-133850.jpg" alt="jpeg"></p>
-<pre><code>Iris Setosa
-</code></pre><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-133913.jpg" alt="jpeg"></p>
-<pre><code>Iris Versicolor
-</code></pre><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-133930.jpg" alt="jpeg"></p>
-<pre><code>Iris Virginica
-</code></pre><h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><p><strong>如果我们需要一个算法来识别不同种类的iris（鸢尾花），需要哪些数据？</strong></p>
-<p>我们需要一个<code>[n_samples x n_features]</code>的二维数组</p>
-<ul>
-<li><code>n_samples</code>表示什么？</li>
-<li><code>n_features</code>表示什么？</li>
-</ul>
-<p>每一个样本必须有确定数量的特征，每个特征都是样本的某种量化值。</p>
-<h3 id="从sklearn中加载iris数据集"><a href="#从sklearn中加载iris数据集" class="headerlink" title="从sklearn中加载iris数据集"></a>从sklearn中加载iris数据集</h3><p>sklearn中包含了这些种类的iris数据集。这数据集包含下面的特征值：</p>
-<ul>
-<li>数据集中的特征：</li>
-</ul>
-<ol>
-<li>花萼长度（单位cm）</li>
-<li>花萼宽度（单位cm）</li>
-<li>花瓣长度（单位cm）</li>
-<li>花瓣宽度（单位cm）</li>
-</ol>
-<ul>
-<li>预测的目标分类：</li>
-</ul>
-<ol>
-<li>山鸢尾（Iris Setosa）</li>
-<li>杂色鸢尾（Iris Versicolour）</li>
-<li>维吉尼亚鸢尾（Iris Virginica）</li>
-</ol>
-<p><code>sklearn</code>包含iris的CSV文件包括加载到numpy arrays的函数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</div><div class="line">iris = load_iris()</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iris.keys()</div></pre></td></tr></table></figure>
-<pre><code>[&apos;target_names&apos;, &apos;data&apos;, &apos;target&apos;, &apos;DESCR&apos;, &apos;feature_names&apos;]
-</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">n_samples, n_features = iris.data.shape</div><div class="line">print((n_samples, n_features))</div><div class="line">print(iris.data[<span class="number">0</span>])</div></pre></td></tr></table></figure>
-<pre><code>(150, 4)
-[ 5.1  3.5  1.4  0.2]
-</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">print(iris.data.shape)</div><div class="line">print(iris.target.shape)</div></pre></td></tr></table></figure>
-<pre><code>(150, 4)
-(150,)
-</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print(iris.target)</div></pre></td></tr></table></figure>
-<pre><code>[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
- 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2
- 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
- 2 2]
-</code></pre><p>这个数据集是四维的，但是我们可以用scatter plot每次展示两维：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line">x_index = <span class="number">0</span></div><div class="line">y_index = <span class="number">1</span></div><div class="line"></div><div class="line"><span class="comment"># this formatter will label the colorbar with the correct target names</span></div><div class="line">formatter = plt.FuncFormatter(<span class="keyword">lambda</span> i, *args: iris.target_names[int(i)])</div><div class="line"></div><div class="line">plt.scatter(iris.data[:, x_index], iris.data[:, y_index],</div><div class="line">            c=iris.target, cmap=plt.cm.get_cmap(<span class="string">'RdYlBu'</span>, <span class="number">3</span>))</div><div class="line">plt.colorbar(ticks=[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>], format=formatter)</div><div class="line">plt.clim(<span class="number">-0.5</span>, <span class="number">2.5</span>)</div><div class="line">plt.xlabel(iris.feature_names[x_index])</div><div class="line">plt.ylabel(iris.feature_names[y_index]);</div></pre></td></tr></table></figure>
-<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-133955.jpg" alt="png"></p>
-<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><p>改变上面代码中<code>x_index</code>和<code>y_index</code>值，找出一个点可以最大化的分割这三类</p>
-<p>这是个<strong>降维</strong>的练习，我们稍后会见到。</p>
-<h2 id="其他可用的数据"><a href="#其他可用的数据" class="headerlink" title="其他可用的数据"></a>其他可用的数据</h2><p>有以下的三种形式：</p>
-<ul>
-<li><strong>sklearn包数据</strong> 在安装的时候，这些小的数据集被打包在sklearn中，通过<code>sklearn.datasets.load_*</code>函数能够被加载</li>
-<li><strong>下载的数据</strong> 这些大的数据集可以通过sklearn提供的<code>sklearn.datasets.fetch_*</code>函数从网上下载</li>
-<li><strong>生成的数据</strong> 这些数据可以通过sklearn提供的<code>sklearn.datasets.make_*</code>函数，基于一个随机种子从模型中产生</li>
-</ul>
-<p>你能通过IPython的tab补全功能，浏览这些函数。在从sklearn中导入<code>datasets</code>子模块后，你可以<br>输入datasets.load<em> + TAB或datasets.fetch</em> + TAB或datasets.make_ + TAB来浏览这些函数列表。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> datasets</div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Type datasets.fetch_&lt;TAB&gt; or datasets.load_&lt;TAB&gt; in IPython to see all possibilities</span></div><div class="line"></div><div class="line"><span class="comment"># datasets.fetch_</span></div></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># datasets.load_</span></div></pre></td></tr></table></figure>
-<p>在下一章，我们将使用这些数据集，并且学习机器学习的基本方法。</p>
-<hr>
-<p><a href="https://github.com/yummybian/sklearn_pycon2015_zh.git" target="_blank" rel="external">Jupyter实现</a></p>
-<hr>
-<p><a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png"></a><br>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议</a>进行许可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/09/在k8s中如何使用GPU/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="彬叔">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/09/在k8s中如何使用GPU/" itemprop="url">在k8s中如何使用GPU</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-09T17:09:15+08:00">
-                2017-11-09
-              </time>
+              <a href="/2017/11/09/02.1-Machine-Learning-Intro-zh/" rel="next" title="第一篇 介绍Scikit-Learn：用Python进行机器学习">
+                <i class="fa fa-chevron-left"></i> 第一篇 介绍Scikit-Learn：用Python进行机器学习
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微服务/" itemprop="url" rel="index">
-                    <span itemprop="name">微服务</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/09/在k8s中如何使用GPU/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/09/在k8s中如何使用GPU/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/11/09/在k8s中如何使用GPU/" class="leancloud_visitors" data-flag-title="在k8s中如何使用GPU">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>部署<strong>All In One</strong> K8s，可以参考这位老兄<a href="http://stuartingram.com/2016/08/31/installing-kubernetes-on-ubuntu-14-04/" target="_blank" rel="external">文章</a>。</p>
-<h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><ul>
-<li>安装NVIDIA驱动，安装完成后运行<code>nvidia-docker-plugin</code>来确认驱动是否被正确的加载。</li>
-<li>查看nvidia device信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -s localhost:3476/docker/cli</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="不通过nvidia-docker启动GPU容器"><a href="#不通过nvidia-docker启动GPU容器" class="headerlink" title="不通过nvidia-docker启动GPU容器"></a>不通过nvidia-docker启动GPU容器</h2><h3 id="手动指定驱动路径，然后挂载驱动和CUDA库"><a href="#手动指定驱动路径，然后挂载驱动和CUDA库" class="headerlink" title="手动指定驱动路径，然后挂载驱动和CUDA库"></a>手动指定驱动路径，然后挂载驱动和CUDA库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> DRIVER=<span class="string">'-v /var/lib/nvidia-docker/volumes/nvidia_driver/375.66:/usr/local/nvidia'</span></div><div class="line"><span class="built_in">export</span> CUDA_SO=$(\ls /usr/lib/x86_64-linux-gnu/libcuda.* | xargs -I&#123;&#125; <span class="built_in">echo</span> <span class="string">'--volume &#123;&#125;:&#123;&#125;'</span>)</div><div class="line"><span class="built_in">export</span> DEVICES=$(\ls /dev/nvidia* | xargs -I&#123;&#125; <span class="built_in">echo</span> <span class="string">'--device &#123;&#125;:&#123;&#125;'</span>)</div></pre></td></tr></table></figure>
-<h3 id="进入tf容器"><a href="#进入tf容器" class="headerlink" title="进入tf容器"></a>进入tf容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --rm -it <span class="variable">$DRIVER</span> <span class="variable">$CUDA_SO</span> <span class="variable">$DEVICES</span> tensorflow/tensorflow:1.2.1-devel-gpu-py3</div></pre></td></tr></table></figure>
-<h3 id="在tf容器中用nvidia-smi命令查看GPU信息"><a href="#在tf容器中用nvidia-smi命令查看GPU信息" class="headerlink" title="在tf容器中用nvidia-smi命令查看GPU信息"></a>在tf容器中用<code>nvidia-smi</code>命令查看GPU信息</h3><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-143028.png" alt="image-02"><br>可以看到两块GPU都已经正常映射</p>
-<h3 id="在tf容器中运行下面的代码，看tf是否能正常工作"><a href="#在tf容器中运行下面的代码，看tf是否能正常工作" class="headerlink" title="在tf容器中运行下面的代码，看tf是否能正常工作"></a>在tf容器中运行下面的代码，看tf是否能正常工作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="comment"># Creates a graph.</span></div><div class="line">a = tf.constant([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>], shape=[<span class="number">2</span>, <span class="number">3</span>], name=<span class="string">'a'</span>)</div><div class="line">b = tf.constant([<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>], shape=[<span class="number">3</span>, <span class="number">2</span>], name=<span class="string">'b'</span>)</div><div class="line">c = tf.matmul(a, b)</div><div class="line"><span class="comment"># Creates a session with log_device_placement set to True.</span></div><div class="line">sess = tf.Session(config=tf.ConfigProto(log_device_placement=<span class="keyword">True</span>))</div><div class="line"><span class="comment"># Runs the op.</span></div><div class="line">print(sess.run(c))</div></pre></td></tr></table></figure>
-<h2 id="在k8s中使用GPU"><a href="#在k8s中使用GPU" class="headerlink" title="在k8s中使用GPU"></a>在k8s中使用GPU</h2><ul>
-<li><p>由于支持GPU是一个试验性的feature，故我们需要修改一下启动参数，在hack/local-up-cluster.sh中修改</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FEATURE_GATES=<span class="variable">$&#123;FEATURE_GATES:-"Accelerators=true"&#125;</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>查看node所能提供的资源上限</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubectl get nodes -o json | jq <span class="string">'.items[] | &#123;name: .metadata.name, cap: .status.capacity&#125;'</span></div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-140659.png" alt="image-02"><br>看到有两块GPU</p>
-<ul>
-<li>编写pod spec<blockquote>
-<p>有两个地方需要注意</p>
-</blockquote>
-</li>
-</ul>
-<ol>
-<li>挂载nvidia驱动和CUDA库。</li>
-<li>增加<code>&quot;alpha.kubernetes.io/nvidia-gpu&quot;: &quot;1&quot;</code>，表示申请1块GPU。<br><a href="https://gist.github.com/yummybian/60f185875a43778b8835468ec99ea3f3" target="_blank" rel="external">完整例子</a></li>
-</ol>
-<p>参考：<br><a href="https://medium.com/jim-fleming/running-tensorflow-on-kubernetes-ca00d0e67539" target="_blank" rel="external">Running TensorFlow (with GPU) on Kubernetes</a></p>
-<p><a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png"></a><br>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议</a>进行许可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -1132,160 +716,37 @@
   </article>
 
 
-    
+
+    <div class="post-spread">
       
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/04/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="彬叔">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Bin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/04/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-04T17:26:45+08:00">
-                2017-11-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/04/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/04/hello-world/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/11/04/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -1293,6 +754,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -1313,8 +788,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1402,6 +886,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sklearn-estimator对象"><span class="nav-number">1.</span> <span class="nav-text">Sklearn  estimator对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监督学习：分类和回归"><span class="nav-number">2.</span> <span class="nav-text">监督学习：分类和回归</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类例子"><span class="nav-number">2.1.</span> <span class="nav-text">分类例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#练习"><span class="nav-number">2.1.1.</span> <span class="nav-text">练习</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回归例子"><span class="nav-number">2.2.</span> <span class="nav-text">回归例子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#练习-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">练习</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无监督学习：降维和聚类"><span class="nav-number">3.</span> <span class="nav-text">无监督学习：降维和聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#降维：PCA"><span class="nav-number">3.1.</span> <span class="nav-text">降维：PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#聚类-K-means"><span class="nav-number">3.1.1.</span> <span class="nav-text">聚类: K-means</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结：sklearn-estimator接口"><span class="nav-number">3.2.</span> <span class="nav-text">总结：sklearn estimator接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型验证"><span class="nav-number">4.</span> <span class="nav-text">模型验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程图：如何选择你的Estimator"><span class="nav-number">5.</span> <span class="nav-text">流程图：如何选择你的Estimator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速应用：OCR识别"><span class="nav-number">6.</span> <span class="nav-text">快速应用：OCR识别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加载和可视化数字"><span class="nav-number">6.1.</span> <span class="nav-text">加载和可视化数字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无监督学习：降维"><span class="nav-number">6.2.</span> <span class="nav-text">无监督学习：降维</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数字分类"><span class="nav-number">6.3.</span> <span class="nav-text">数字分类</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1542,6 +1042,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -1559,6 +1063,18 @@
       <script id="dsq-count-scr" src="https://bin.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/11/09/02.2-Basic-Principles-zh/';
+          this.page.identifier = '2017/11/09/02.2-Basic-Principles-zh/';
+          this.page.title = '第二篇 机器学习的基本方法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bin.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
