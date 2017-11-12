@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,Sklearn,sklearn_pycon2015," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="深入监督学习：随机森林前面我们见过了一种强大的分类器：支持向量机。这里我们将看到另外一种强大的算法，这是一种non-parametric算法叫做随机森林。 1234567%matplotlib inlineimport numpy as npimport matplotlib.pyplot as pltfrom scipy import stats# use seaborn plotting de">
+<meta name="keywords" content="机器学习,Sklearn,sklearn_pycon2015">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第四篇 深入监督学习：随机森林">
+<meta property="og:url" content="http://yoursite.com/2017/11/12/03.2-Regression-Forests-zh/index.html">
+<meta property="og:site_name" content="Bin&#39;s Blog">
+<meta property="og:description" content="深入监督学习：随机森林前面我们见过了一种强大的分类器：支持向量机。这里我们将看到另外一种强大的算法，这是一种non-parametric算法叫做随机森林。 1234567%matplotlib inlineimport numpy as npimport matplotlib.pyplot as pltfrom scipy import stats# use seaborn plotting de">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042107.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042121.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042139.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042200.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042212.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042229.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042244.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042259.jpg">
+<meta property="og:image" content="file:///Users/yummy/Desktop/03.2-Regression-Forests-zh/output_24_0.png">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042322.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042336.jpg">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042349.jpg">
+<meta property="og:image" content="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png">
+<meta property="og:updated_time" content="2017-11-12T13:55:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第四篇 深入监督学习：随机森林">
+<meta name="twitter:description" content="深入监督学习：随机森林前面我们见过了一种强大的分类器：支持向量机。这里我们将看到另外一种强大的算法，这是一种non-parametric算法叫做随机森林。 1234567%matplotlib inlineimport numpy as npimport matplotlib.pyplot as pltfrom scipy import stats# use seaborn plotting de">
+<meta name="twitter:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042107.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/11/12/03.2-Regression-Forests-zh/"/>
+
+
+
+
+
+  <title>第四篇 深入监督学习：随机森林 | Bin's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?eb4b531447906baef3b3c138130db2ad";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Bin's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/12/03.2-Regression-Forests-zh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="彬叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">第四篇 深入监督学习：随机森林</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-12T21:54:10+08:00">
+                2017-11-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/12/03.2-Regression-Forests-zh/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/12/03.2-Regression-Forests-zh/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/11/12/03.2-Regression-Forests-zh/" class="leancloud_visitors" data-flag-title="第四篇 深入监督学习：随机森林">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="深入监督学习：随机森林"><a href="#深入监督学习：随机森林" class="headerlink" title="深入监督学习：随机森林"></a>深入监督学习：随机森林</h1><p>前面我们见过了一种强大的分类器：<strong>支持向量机</strong>。<br>这里我们将看到另外一种强大的算法，这是一种<em>non-parametric</em>算法叫做<strong>随机森林</strong>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</div><div class="line"></div><div class="line"><span class="comment"># use seaborn plotting defaults</span></div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns; sns.set()</div></pre></td></tr></table></figure>
+<h2 id="随机森林：决策树"><a href="#随机森林：决策树" class="headerlink" title="随机森林：决策树"></a>随机森林：决策树</h2><p>随机森林基于决策树，它是<em>集成学习</em>的一个例子。基于这个原因，我们用决策树开始介绍。<br>决策树用一种非常直观的方式来分类对象：你可以问一系列问题来做出yes或no的判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> fig_code</div><div class="line">fig_code.plot_example_decision_tree()</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042107.jpg" alt="png"></p>
+<p>上面的二叉树分类很有效率。这个技巧的关键是<em>对特征提问</em>。<br>这个过程是这样的：在训练决策树分类器过程中，算法查找每一个特征，然后决定哪一个是正确的答案。</p>
+<h3 id="创建决策树"><a href="#创建决策树" class="headerlink" title="创建决策树"></a>创建决策树</h3><p>这里是sklearn中的决策树分类器的一个例子。我们开始定义一些二维的打过标签的数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_blobs</div><div class="line"></div><div class="line">X, y = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>,</div><div class="line">                  random_state=<span class="number">0</span>, cluster_std=<span class="number">1.0</span>)</div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y, s=<span class="number">50</span>, cmap=<span class="string">'rainbow'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042121.jpg" alt="png"></p>
+<p>我们引入一些可视化的函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fig_code <span class="keyword">import</span> visualize_tree, plot_tree_interactive</div></pre></td></tr></table></figure>
+<p>现在我们使用IPython的<code>interact</code>，来看一下决策树的分割过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">plot_tree_interactive(X, y);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042139.jpg" alt="png"></p>
+<p>注意随着深度的增加，这些节点一分为二，这些节点只包含一个分类。它是非常快速的<strong>非参数</strong>分类，在实践中很有用。</p>
+<p><strong>问题：你能发现上面的有什么问题？ </strong></p>
+<h3 id="决策树和过拟合"><a href="#决策树和过拟合" class="headerlink" title="决策树和过拟合"></a>决策树和过拟合</h3><p>决策树有个问题，就是它很容易产生过拟合。因为他们在分类的过程很容易学习到<strong>noise</strong>而不是<strong>signal</strong>。我们看下两棵决策树根据同一个数据集中两个不同子类构造的过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</div><div class="line">clf = DecisionTreeClassifier()</div><div class="line"></div><div class="line">plt.figure()</div><div class="line">visualize_tree(clf, X[:<span class="number">200</span>], y[:<span class="number">200</span>], boundaries=<span class="keyword">False</span>)</div><div class="line">plt.figure()</div><div class="line">visualize_tree(clf, X[<span class="number">-200</span>:], y[<span class="number">-200</span>:], boundaries=<span class="keyword">False</span>)</div></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.figure.Figure at 0x118962a50&gt;
+</code></pre><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042200.jpg" alt="png"></p>
+<pre><code>&lt;matplotlib.figure.Figure at 0x118f4de50&gt;
+</code></pre><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042212.jpg" alt="png"></p>
+<pre><code>&lt;matplotlib.figure.Figure at 0x11858d790&gt;
+</code></pre><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042229.jpg" alt="png"></p>
+<p>分类完全不同！很明显这产生了<strong>过拟合</strong>：当预测新的样本时，结果反映了模型中的<strong>noise</strong>而不是<strong>signal</strong>。</p>
+<h2 id="Estimators的集成：随机森林"><a href="#Estimators的集成：随机森林" class="headerlink" title="Estimators的集成：随机森林"></a>Estimators的集成：随机森林</h2><p>一个解决过拟合的可以方式是使用<strong>集成方法</strong>：这是一个<em>meta-estimator</em>，它由多个独立的estimator组成，能够平衡每个estimator过拟合结果。和它包含的单独的estimator相比，评估的结果看上去更加健壮和精确。</p>
+<p>一个最常见的集成方法叫做<strong>随机森林</strong>，它由许多决策树组成。</p>
+<p>让我先看看下面的决策树例子获得一个感性的认识：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fit_randomized_tree</span><span class="params">(random_state=<span class="number">0</span>)</span>:</span></div><div class="line">    X, y = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>,</div><div class="line">                      random_state=<span class="number">0</span>, cluster_std=<span class="number">2.0</span>)</div><div class="line">    clf = DecisionTreeClassifier(max_depth=<span class="number">15</span>)</div><div class="line">    </div><div class="line">    rng = np.random.RandomState(random_state)</div><div class="line">    i = np.arange(len(y))</div><div class="line">    rng.shuffle(i)</div><div class="line">    visualize_tree(clf, X[i[:<span class="number">250</span>]], y[i[:<span class="number">250</span>]], boundaries=<span class="keyword">False</span>,</div><div class="line">                   xlim=(X[:, <span class="number">0</span>].min(), X[:, <span class="number">0</span>].max()),</div><div class="line">                   ylim=(X[:, <span class="number">1</span>].min(), X[:, <span class="number">1</span>].max()))</div><div class="line">    </div><div class="line"><span class="keyword">from</span> IPython.html.widgets <span class="keyword">import</span> interact</div><div class="line">interact(fit_randomized_tree, random_state=[<span class="number">0</span>, <span class="number">100</span>]);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042244.jpg" alt="png"></p>
+<p>虽然样本发生变化时模型对样本的分类也变化了，但是大的特性保持不变。随机森林分类器做的事情类似，它综合考虑了所有决策树的判断：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</div><div class="line">clf = RandomForestClassifier(n_estimators=<span class="number">100</span>, random_state=<span class="number">0</span>)</div><div class="line">visualize_tree(clf, X, y, boundaries=<span class="keyword">False</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042259.jpg" alt="png"></p>
+<p>通过平衡100个随机模型，随机森林最后得出的模型更好拟合了数据。</p>
+<h2 id="例子：移步到回归"><a href="#例子：移步到回归" class="headerlink" title="例子：移步到回归"></a>例子：移步到回归</h2><p>上面我们在分类问题上使用了随机森林。它在回归问题上也能很好地工作。使用的estimator叫做<code>sklearn.ensemble.RandomForestRegressor</code>。</p>
+<p>让我们来看下怎么使用它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</div><div class="line"></div><div class="line">x = <span class="number">10</span> * np.random.rand(<span class="number">100</span>)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(x, sigma=<span class="number">0.3</span>)</span>:</span></div><div class="line">    fast_oscillation = np.sin(<span class="number">5</span> * x)</div><div class="line">    slow_oscillation = np.sin(<span class="number">0.5</span> * x)</div><div class="line">    noise = sigma * np.random.randn(len(x))</div><div class="line"></div><div class="line">    <span class="keyword">return</span> slow_oscillation + fast_oscillation + noise</div><div class="line"></div><div class="line">y = model(x)</div><div class="line">plt.errorbar(x, y, <span class="number">0.3</span>, fmt=<span class="string">'o'</span>);</div></pre></td></tr></table></figure>
+<p><img src="file:///Users/yummy/Desktop/03.2-Regression-Forests-zh/output_24_0.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">xfit = np.linspace(<span class="number">0</span>, <span class="number">10</span>, <span class="number">1000</span>)</div><div class="line">yfit = RandomForestRegressor(<span class="number">100</span>).fit(x[:, <span class="keyword">None</span>], y).predict(xfit[:, <span class="keyword">None</span>])</div><div class="line">ytrue = model(xfit, <span class="number">0</span>)</div><div class="line"></div><div class="line">plt.errorbar(x, y, <span class="number">0.3</span>, fmt=<span class="string">'o'</span>)</div><div class="line">plt.plot(xfit, yfit, <span class="string">'-r'</span>);</div><div class="line">plt.plot(xfit, ytrue, <span class="string">'-k'</span>, alpha=<span class="number">0.5</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042322.jpg" alt="png"></p>
+<p>我们可以看到，我们甚至没有指定一个multi-period模型，随机森林就能够足够灵活地适应了multi-period数据。</p>
+<h2 id="例子：应用随机森林分类数字"><a href="#例子：应用随机森林分类数字" class="headerlink" title="例子：应用随机森林分类数字"></a>例子：应用随机森林分类数字</h2><p>我们之前见过了<strong>手写数字</strong>数据集。我们这里也用它来测试随机森林的准确率。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</div><div class="line">digits = load_digits()</div><div class="line">digits.keys()</div></pre></td></tr></table></figure>
+<pre><code>[&apos;images&apos;, &apos;data&apos;, &apos;target_names&apos;, &apos;DESCR&apos;, &apos;target&apos;]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">X = digits.data</div><div class="line">y = digits.target</div><div class="line">print(X.shape)</div><div class="line">print(y.shape)</div></pre></td></tr></table></figure>
+<pre><code>(1797, 64)
+(1797,)
+</code></pre><p>首先我们看一下这些手写数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># set up the figure</span></div><div class="line">fig = plt.figure(figsize=(<span class="number">6</span>, <span class="number">6</span>))  <span class="comment"># figure size in inches</span></div><div class="line">fig.subplots_adjust(left=<span class="number">0</span>, right=<span class="number">1</span>, bottom=<span class="number">0</span>, top=<span class="number">1</span>, hspace=<span class="number">0.05</span>, wspace=<span class="number">0.05</span>)</div><div class="line"></div><div class="line"><span class="comment"># plot the digits: each image is 8x8 pixels</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">64</span>):</div><div class="line">    ax = fig.add_subplot(<span class="number">8</span>, <span class="number">8</span>, i + <span class="number">1</span>, xticks=[], yticks=[])</div><div class="line">    ax.imshow(digits.images[i], cmap=plt.cm.binary)</div><div class="line">    </div><div class="line">    <span class="comment"># label the image with the target value</span></div><div class="line">    ax.text(<span class="number">0</span>, <span class="number">7</span>, str(digits.target[i]))</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042336.jpg" alt="png"></p>
+<p>我们能快速使用决策树来对这些数字进行分类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</div><div class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</div><div class="line"></div><div class="line">Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, random_state=<span class="number">0</span>)</div><div class="line">clf = DecisionTreeClassifier(max_depth=<span class="number">11</span>)</div><div class="line">clf.fit(Xtrain, ytrain)</div><div class="line">ypred = clf.predict(Xtest)</div></pre></td></tr></table></figure>
+<p>我们检查一下分类器准确率：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">metrics.accuracy_score(ypred, ytest)</div></pre></td></tr></table></figure>
+<pre><code>0.84222222222222221
+</code></pre><p>用混淆矩阵更直观：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">plt.imshow(metrics.confusion_matrix(ypred, ytest),</div><div class="line">           interpolation=<span class="string">'nearest'</span>, cmap=plt.cm.binary)</div><div class="line">plt.grid(<span class="keyword">False</span>)</div><div class="line">plt.colorbar()</div><div class="line">plt.xlabel(<span class="string">"predicted label"</span>)</div><div class="line">plt.ylabel(<span class="string">"true label"</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-11-042349.jpg" alt="png"></p>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><ol>
+<li>用<code>sklearn.ensemble.RandomForestClassifier</code>来实现上面的任务。调节`max_depth<code>，</code>max_features<code>和</code>n_estimators``参数<br>会对结果造成什么影响？</li>
+<li>再用<code>sklearn.svm.SVC</code>分类器，调节<code>kernel</code>, <code>C</code>和<code>gamma</code>试试看？</li>
+<li>对每一个模型用一些参数集，然后检查一下F1分数（<code>sklearn.metrics.f1_score</code>）。</li>
+</ol>
+<hr>
+<p><a href="https://github.com/yummybian/sklearn_pycon2015_zh.git" target="_blank" rel="external">Jupyter实现</a></p>
+<hr>
+<p><a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png"></a><br>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议</a>进行许可。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+            <a href="/tags/Sklearn/" rel="tag"># Sklearn</a>
+          
+            <a href="/tags/sklearn-pycon2015/" rel="tag"># sklearn_pycon2015</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/12/03.1-Classification-SVMs-zh/" rel="next" title="第三篇 深入监督学习：支持向量机">
+                <i class="fa fa-chevron-left"></i> 第三篇 深入监督学习：支持向量机
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">彬叔</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yummybian" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yummybian@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.douban.com/people/3280249/" target="_blank" title="豆瓣">
+                    
+                      <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/binbin.io" target="_blank" title="知乎">
+                    
+                      <i class="fa fa-fw fa-globe"></i>知乎</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深入监督学习：随机森林"><span class="nav-number">1.</span> <span class="nav-text">深入监督学习：随机森林</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#随机森林：决策树"><span class="nav-number">1.1.</span> <span class="nav-text">随机森林：决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建决策树"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树和过拟合"><span class="nav-number">1.1.2.</span> <span class="nav-text">决策树和过拟合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Estimators的集成：随机森林"><span class="nav-number">1.2.</span> <span class="nav-text">Estimators的集成：随机森林</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子：移步到回归"><span class="nav-number">1.3.</span> <span class="nav-text">例子：移步到回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子：应用随机森林分类数字"><span class="nav-number">1.4.</span> <span class="nav-text">例子：应用随机森林分类数字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#练习"><span class="nav-number">1.4.1.</span> <span class="nav-text">练习</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">彬叔</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://bin.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/11/12/03.2-Regression-Forests-zh/';
+          this.page.identifier = '2017/11/12/03.2-Regression-Forests-zh/';
+          this.page.title = '第四篇 深入监督学习：随机森林';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bin.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("riExM5iqp9SpB8bmWrbcTJz6-gzGzoHsz", "zl9Exu2Rqq7DOkCvxmRsuzjC");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

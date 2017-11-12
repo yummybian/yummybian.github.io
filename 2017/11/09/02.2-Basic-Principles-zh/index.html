@@ -117,13 +117,13 @@
 
 
 
-<meta name="description" content="This notebook was put together by Jake Vanderplas for PyCon 2015. Source and license info is on GitHub. 这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括">
+<meta name="description" content="这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括降维和聚类问题。 12345678910111213%matplotlib inlineimport numpy as npimport matplotlib.pyplot as plt# use seabo">
 <meta name="keywords" content="机器学习,Sklearn,sklearn_pycon2015">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第二篇 机器学习的基本方法">
 <meta property="og:url" content="http://yoursite.com/2017/11/09/02.2-Basic-Principles-zh/index.html">
 <meta property="og:site_name" content="Bin&#39;s Blog">
-<meta property="og:description" content="This notebook was put together by Jake Vanderplas for PyCon 2015. Source and license info is on GitHub. 这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括">
+<meta property="og:description" content="这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括降维和聚类问题。 12345678910111213%matplotlib inlineimport numpy as npimport matplotlib.pyplot as plt# use seabo">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-142927.jpg">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-142952.jpg">
@@ -132,16 +132,16 @@
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143107.jpg">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143133.jpg">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143153.jpg">
-<meta property="og:image" content="http://yoursite.com/2017/11/09/02.2-Basic-Principles-zh/output_48_0.png">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-10-output_48_0.png">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143219.jpg">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143237.jpg">
-<meta property="og:image" content="file:///Users/yummy/Desktop/02.2-Basic-Principles-zh/output_75_0.png">
+<meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-10-output_75_0.png">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143319.jpg">
 <meta property="og:image" content="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png">
-<meta property="og:updated_time" content="2017-11-09T14:37:49.000Z">
+<meta property="og:updated_time" content="2017-11-12T13:55:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第二篇 机器学习的基本方法">
-<meta name="twitter:description" content="This notebook was put together by Jake Vanderplas for PyCon 2015. Source and license info is on GitHub. 这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括">
+<meta name="twitter:description" content="这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。 在简单的介绍sklearn的Estimator对象后，我们会介绍监督学习，包括分类和回归问题，接下来无监督学习，包括降维和聚类问题。 12345678910111213%matplotlib inlineimport numpy as npimport matplotlib.pyplot as plt# use seabo">
 <meta name="twitter:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-142927.jpg">
 
 
@@ -436,8 +436,7 @@
       
 
       
-        <p><small><i>This notebook was put together by <a href="http://www.vanderplas.com" target="_blank" rel="external">Jake Vanderplas</a> for PyCon 2015. Source and license info is on <a href="https://github.com/jakevdp/sklearn_pycon2015/" target="_blank" rel="external">GitHub</a>.</i></small></p>
-<p>这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。</p>
+        <p>这里我们将深入机器学习的方法，和怎么通过sklearn API去使用它们。</p>
 <p>在简单的介绍sklearn的<em>Estimator</em>对象后，我们会介绍<strong>监督学习</strong>，包括<strong>分类</strong>和<strong>回归</strong>问题，接下来<strong>无监督学习</strong>，包括<strong>降维</strong>和<strong>聚类</strong>问题。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"></div><div class="line"><span class="comment"># use seaborn for plot defaults</span></div><div class="line"><span class="comment"># this can be safely commented out</span></div><div class="line"><span class="keyword">import</span> seaborn; seaborn.set()</div><div class="line"></div><div class="line"><span class="comment"># eliminate warnings</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">warn</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">    <span class="keyword">pass</span></div><div class="line"><span class="keyword">import</span> warnings</div><div class="line">warnings.warn = warn</div></pre></td></tr></table></figure>
 <h2 id="Sklearn-estimator对象"><a href="#Sklearn-estimator对象" class="headerlink" title="Sklearn  estimator对象"></a>Sklearn  estimator对象</h2><p>Sklearn中的每一个算法都被某一个’’Estimator’’对象所表示。例如一个线性回归被表示为：</p>
@@ -561,7 +560,7 @@
 </code></pre><p>以上展示了我们分类器的真实性能，看上去第二类和第三类有些分不清。把数据分为训练集和测试集是非常重要的，后面我们会深入讨论模型评估。</p>
 <h2 id="流程图：如何选择你的Estimator"><a href="#流程图：如何选择你的Estimator" class="headerlink" title="流程图：如何选择你的Estimator"></a>流程图：如何选择你的Estimator</h2><p>这是一张sklearn的顶级贡献者<a href="https://github.com/amueller" target="_blank" rel="external">Andreas Mueller</a>绘制的流程图，它告诉你在不同的场景下如何选择合适的算法。请大家保存起来随时参考。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> IPython.display <span class="keyword">import</span> Image</div><div class="line">Image(<span class="string">"http://scikit-learn.org/dev/_static/ml_map.png"</span>)</div></pre></td></tr></table></figure>
-<p><img src="output_48_0.png" alt="png"></p>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-10-output_48_0.png" alt="png"></p>
 <p>Original source on the <a href="http://scikit-learn.org/stable/tutorial/machine_learning_map/" target="_blank" rel="external">scikit-learn website</a></p>
 <h2 id="快速应用：OCR识别"><a href="#快速应用：OCR识别" class="headerlink" title="快速应用：OCR识别"></a>快速应用：OCR识别</h2><p>我们根据上面的原则展示一个更有趣的例子，OCR识别</p>
 <ul>
@@ -649,7 +648,7 @@
  [ 0  2  0  0  0  0  0  0 38  0]
  [ 0  0  0  1  0  1  0  1  2 34]]
 </code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">plt.imshow(np.log(confusion_matrix(ytest, ypred)),</div><div class="line">           cmap=<span class="string">'Blues'</span>, interpolation=<span class="string">'nearest'</span>)</div><div class="line">plt.grid(<span class="keyword">False</span>)</div><div class="line">plt.ylabel(<span class="string">'true'</span>)</div><div class="line">plt.xlabel(<span class="string">'predicted'</span>);</div></pre></td></tr></table></figure>
-<p><img src="file:///Users/yummy/Desktop/02.2-Basic-Principles-zh/output_75_0.png" alt="png"></p>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-10-output_75_0.png" alt="png"></p>
 <p>我们把分好类的数字绘制出来，红色的数字表示错误的分类：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">fig, axes = plt.subplots(<span class="number">10</span>, <span class="number">10</span>, figsize=(<span class="number">8</span>, <span class="number">8</span>))</div><div class="line">fig.subplots_adjust(hspace=<span class="number">0.1</span>, wspace=<span class="number">0.1</span>)</div><div class="line"></div><div class="line"><span class="keyword">for</span> i, ax <span class="keyword">in</span> enumerate(axes.flat):</div><div class="line">    ax.imshow(Xtest[i].reshape(<span class="number">8</span>, <span class="number">8</span>), cmap=<span class="string">'binary'</span>)</div><div class="line">    ax.text(<span class="number">0.05</span>, <span class="number">0.05</span>, str(ypred[i]),</div><div class="line">            transform=ax.transAxes,</div><div class="line">            color=<span class="string">'green'</span> <span class="keyword">if</span> (ytest[i] == ypred[i]) <span class="keyword">else</span> <span class="string">'red'</span>)</div><div class="line">    ax.set_xticks([])</div><div class="line">    ax.set_yticks([])</div></pre></td></tr></table></figure>
 <p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-09-143319.jpg" alt="png"></p>
@@ -701,6 +700,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/12/03.1-Classification-SVMs-zh/" rel="prev" title="第三篇 深入监督学习：支持向量机">
+                第三篇 深入监督学习：支持向量机 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -813,7 +816,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
