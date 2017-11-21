@@ -307,6 +307,475 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/21/04.2-Clustering-KMeans-zh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="彬叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/21/04.2-Clustering-KMeans-zh/" itemprop="url">第六篇 聚类：深入K-Means</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-21T12:37:16+08:00">
+                2017-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/21/04.2-Clustering-KMeans-zh/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/21/04.2-Clustering-KMeans-zh/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/11/21/04.2-Clustering-KMeans-zh/" class="leancloud_visitors" data-flag-title="第六篇 聚类：深入K-Means">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="聚类：深入K-Means"><a href="#聚类：深入K-Means" class="headerlink" title="聚类：深入K-Means"></a>聚类：深入K-Means</h1><p>这篇我们探讨一下<strong>K-Means聚类</strong>，它属于一种非监督聚类技术。</p>
+<p>先导入一些标准方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</div><div class="line"></div><div class="line"><span class="comment"># use seaborn plotting defaults</span></div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns; sns.set()</div></pre></td></tr></table></figure>
+<h2 id="介绍K-Means"><a href="#介绍K-Means" class="headerlink" title="介绍K-Means"></a>介绍K-Means</h2><p>K-Means是一种<strong>非监督聚类</strong>算法，它不是通过标签来聚类而是数据本身所拥有的属性。</p>
+<p>K-Means是一种相对易于理解的算法。它搜索每个簇的中心点，把离中心点最近的点归为那个簇。</p>
+<p>让我们看下K-Means如何来操作一个简单的簇群。强调一下，这是非监督算法，我们不会给簇上色。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_blobs</div><div class="line">X, y = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>,</div><div class="line">                  random_state=<span class="number">0</span>, cluster_std=<span class="number">0.60</span>)</div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], s=<span class="number">50</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-042507.jpg" alt="png"></p>
+<p>用肉眼能相对容易找出这四簇。如果你执行全面的搜索来划分数据集，搜索空间将达到指数级。幸运的是，sklearn实现了一个著名的<em>Expectation Maximization (EM)</em>方法来帮我们解决这个问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</div><div class="line">est = KMeans(<span class="number">4</span>)  <span class="comment"># 4 clusters</span></div><div class="line">est.fit(X)</div><div class="line">y_kmeans = est.predict(X)</div><div class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=y_kmeans, s=<span class="number">50</span>, cmap=<span class="string">'rainbow'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043152.jpg" alt="png"></p>
+<p>算法区分了4种我们能用肉眼看到的簇！</p>
+<h2 id="K-Means算法：期望最大化（EM）"><a href="#K-Means算法：期望最大化（EM）" class="headerlink" title="K-Means算法：期望最大化（EM）"></a>K-Means算法：期望最大化（EM）</h2><p>K-Means使用了一种叫做<em>期望最大化（EM）</em>的算法来解决问题。<br><em>期望最大化（EM）</em>有下面的两个步骤：</p>
+<ol>
+<li>猜测一些簇心位置</li>
+<li>重复直至收敛<ul>
+<li>为每个点分配一个离他最近的簇心位置</li>
+<li>用平均值法来重新计算簇心位置</li>
+</ul>
+</li>
+</ol>
+<p>让我们可视化这个过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fig_code <span class="keyword">import</span> plot_kmeans_interactive</div><div class="line">plot_kmeans_interactive();</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043211.jpg" alt="png"></p>
+<p>算法会在合理的簇心下面得到收敛。</p>
+<h2 id="K-Means需要注意的地方"><a href="#K-Means需要注意的地方" class="headerlink" title="K-Means需要注意的地方"></a>K-Means需要注意的地方</h2><p>这个算法不能保证收敛。所以sklearn默认会使用许多随机初始化的值从而发现最佳结果。</p>
+<p>而且簇的数量事先得确定…</p>
+<h2 id="K-Means在数字上的应用"><a href="#K-Means在数字上的应用" class="headerlink" title="K-Means在数字上的应用"></a>K-Means在数字上的应用</h2><p>一个更实际的例子，让我们再看一下数字。这里我们将使用k-means来聚类64维的数字，然后看下算法发现的簇心是什么？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</div><div class="line">digits = load_digits()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">est = KMeans(n_clusters=<span class="number">10</span>)</div><div class="line">clusters = est.fit_predict(digits.data)</div><div class="line">est.cluster_centers_.shape</div></pre></td></tr></table></figure>
+<pre><code>(10, 64)
+</code></pre><p>我们看到10个簇。让我们可视化每一个簇心代表的数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fig = plt.figure(figsize=(<span class="number">8</span>, <span class="number">3</span>))</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">    ax = fig.add_subplot(<span class="number">2</span>, <span class="number">5</span>, <span class="number">1</span> + i, xticks=[], yticks=[])</div><div class="line">    ax.imshow(est.cluster_centers_[i].reshape((<span class="number">8</span>, <span class="number">8</span>)), cmap=plt.cm.binary)</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043225.jpg" alt="png"></p>
+<p>K-Means能够发现这些簇，把它们的均值视作可以识别的数字！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> mode</div><div class="line"></div><div class="line">labels = np.zeros_like(clusters)</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</div><div class="line">    mask = (clusters == i)</div><div class="line">    labels[mask] = mode(digits.target[mask])[<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<p>作为对比，让我们使用PCA可视化，并看下真实的簇标签和K-means簇标签：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</div><div class="line"></div><div class="line">X = PCA(<span class="number">2</span>).fit_transform(digits.data)</div><div class="line"></div><div class="line">kwargs = dict(cmap = plt.cm.get_cmap(<span class="string">'rainbow'</span>, <span class="number">10</span>),</div><div class="line">              edgecolor=<span class="string">'none'</span>, alpha=<span class="number">0.6</span>)</div><div class="line">fig, ax = plt.subplots(<span class="number">1</span>, <span class="number">2</span>, figsize=(<span class="number">8</span>, <span class="number">4</span>))</div><div class="line">ax[<span class="number">0</span>].scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=labels, **kwargs)</div><div class="line">ax[<span class="number">0</span>].set_title(<span class="string">'learned cluster labels'</span>)</div><div class="line"></div><div class="line">ax[<span class="number">1</span>].scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=digits.target, **kwargs)</div><div class="line">ax[<span class="number">1</span>].set_title(<span class="string">'true labels'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043236.jpg" alt="png"></p>
+<p>让我们看下K-Means分类器（无标签信息）的准确性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</div><div class="line">accuracy_score(digits.target, labels)</div></pre></td></tr></table></figure>
+<pre><code>0.79298831385642743
+</code></pre><p>接近80%，结果还行。我们看下这个的混淆矩阵：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</div><div class="line">print(confusion_matrix(digits.target, labels))</div><div class="line"></div><div class="line">plt.imshow(confusion_matrix(digits.target, labels),</div><div class="line">           cmap=<span class="string">'Blues'</span>, interpolation=<span class="string">'nearest'</span>)</div><div class="line">plt.colorbar()</div><div class="line">plt.grid(<span class="keyword">False</span>)</div><div class="line">plt.ylabel(<span class="string">'true'</span>)</div><div class="line">plt.xlabel(<span class="string">'predicted'</span>);</div></pre></td></tr></table></figure>
+<pre><code>[[177   0   0   0   1   0   0   0   0   0]
+ [  0  55  24   1   0   1   2   0  99   0]
+ [  1   2 148  13   0   0   0   3   8   2]
+ [  0   0   0 154   0   2   0   7   7  13]
+ [  0   5   0   0 164   0   0   9   3   0]
+ [  0   0   0   1   2 136   1   0   0  42]
+ [  1   1   0   0   0   0 177   0   2   0]
+ [  0   2   0   0   0   0   0 175   2   0]
+ [  0   6   3   2   0   4   2   5 100  52]
+ [  0  20   0   6   0   6   0   7   2 139]]
+</code></pre><p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043253.jpg" alt="png"></p>
+<p>这是一个没有标签的<strong>完全无监督estimator</strong>，具有80%的分类准确率。</p>
+<h2 id="例子：K-Means应用在图像的颜色空间压缩上"><a href="#例子：K-Means应用在图像的颜色空间压缩上" class="headerlink" title="例子：K-Means应用在图像的颜色空间压缩上"></a>例子：K-Means应用在图像的颜色空间压缩上</h2><p>一个有趣的应用是在图像的颜色空间压缩上。例如，想象你有一张上百万颜色像素的图片。在大多数图片中，颜色中的大部分不会被使用，而大部分的像素点颜色是相似甚至一样的。</p>
+<p>sklearn内置了一些图片，可以通过加载模块来使用。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_sample_image</div><div class="line">china = load_sample_image(<span class="string">"china.jpg"</span>)</div><div class="line">plt.imshow(china)</div><div class="line">plt.grid(<span class="keyword">False</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043307.jpg" alt="png"></p>
+<p>图片本身包含了3维数组<code>(height, width, RGB)</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">china.shape</div></pre></td></tr></table></figure>
+<pre><code>(427, 640, 3)
+</code></pre><p>我们能想象这图片是3维颜色空间的点所组成。我们把像素点的取值范围限制在（0，1）的范围，再把位于一个平面上的像素点reshape成一条直线。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">X = (china / <span class="number">255.0</span>).reshape(<span class="number">-1</span>, <span class="number">3</span>)</div><div class="line">print(X.shape)</div></pre></td></tr></table></figure>
+<pre><code>(273280, 3)
+</code></pre><p>我们现在有273280个3维的像素点。</p>
+<p>我们的任务是使用K-Means压缩$256^3$种颜色空间到一个很小的颜色空间（64种颜色空间）。首先我们要在数据集中发现$N_{color}$ 个簇，每个簇代表一个颜色，把属于一个簇的像素点用这个簇的颜色来替代。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># reduce the size of the image for speed</span></div><div class="line">image = china[::<span class="number">3</span>, ::<span class="number">3</span>]</div><div class="line">n_colors = <span class="number">64</span></div><div class="line"></div><div class="line">X = (image / <span class="number">255.0</span>).reshape(<span class="number">-1</span>, <span class="number">3</span>)</div><div class="line">    </div><div class="line">model = KMeans(n_colors)</div><div class="line">labels = model.fit_predict(X)</div><div class="line">colors = model.cluster_centers_</div><div class="line">new_image = colors[labels].reshape(image.shape)</div><div class="line">new_image = (<span class="number">255</span> * new_image).astype(np.uint8)</div><div class="line"></div><div class="line"><span class="comment"># create and plot the new image</span></div><div class="line"><span class="keyword">with</span> sns.axes_style(<span class="string">'white'</span>):</div><div class="line">    plt.figure()</div><div class="line">    plt.imshow(image)</div><div class="line">    plt.title(<span class="string">'input'</span>)</div><div class="line"></div><div class="line">    plt.figure()</div><div class="line">    plt.imshow(new_image)</div><div class="line">    plt.title(<span class="string">'&#123;0&#125; colors'</span>.format(n_colors))</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043320.jpg" alt="png"></p>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-043349.jpg" alt="png"></p>
+<p>比较输入和输出结果：我们把$256^3$种的颜色空间降到了64种</p>
+<hr>
+<p><a href="https://github.com/yummybian/sklearn_pycon2015_zh.git" target="_blank" rel="external">Jupyter实现</a></p>
+<hr>
+<p><a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png"></a><br>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议</a>进行许可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/21/04.1-Dimensionality-PCA-zh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="彬叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Bin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/21/04.1-Dimensionality-PCA-zh/" itemprop="url">第五篇 降维：深入主成分分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-21T12:35:16+08:00">
+                2017-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/21/04.1-Dimensionality-PCA-zh/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/21/04.1-Dimensionality-PCA-zh/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/11/21/04.1-Dimensionality-PCA-zh/" class="leancloud_visitors" data-flag-title="第五篇 降维：深入主成分分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="降维：深入主成分分析"><a href="#降维：深入主成分分析" class="headerlink" title="降维：深入主成分分析"></a>降维：深入主成分分析</h1><p>这里我们将探索<strong>主成分分析</strong>（PCA）, 这是非常有用的线性维度下降技术。</p>
+<p>我们先导入一些标准模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function, division</div><div class="line"></div><div class="line">%matplotlib inline</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</div><div class="line"></div><div class="line"><span class="comment"># use seaborn plotting style defaults</span></div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns; sns.set()</div></pre></td></tr></table></figure>
+<h2 id="介绍主成分分析（Principal-components-analysis）"><a href="#介绍主成分分析（Principal-components-analysis）" class="headerlink" title="介绍主成分分析（Principal components analysis）"></a>介绍主成分分析（Principal components analysis）</h2><p>主成分分析是一种非常强大的用来对数据降维的非监督方法。最简单的是看下面一组二维数据的可视化过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">np.random.seed(<span class="number">1</span>)</div><div class="line">X = np.dot(np.random.random(size=(<span class="number">2</span>, <span class="number">2</span>)), np.random.normal(size=(<span class="number">2</span>, <span class="number">200</span>))).T</div><div class="line">plt.plot(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], <span class="string">'o'</span>)</div><div class="line">plt.axis(<span class="string">'equal'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041317.jpg" alt="png"></p>
+<p>我们能看到在数据里面包含了确定的趋势。PCA能在数据中发现<strong>关键的成分</strong>，并能够描述那些成分在数据分布中的重要性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</div><div class="line"><span class="comment"># 特征维度数目</span></div><div class="line">pca = PCA(n_components=<span class="number">2</span>)</div><div class="line">pca.fit(X)</div><div class="line"><span class="comment"># 降维后的各主成分的方差值</span></div><div class="line">print(pca.explained_variance_)</div><div class="line">print(pca.components_)</div></pre></td></tr></table></figure>
+<pre><code>[ 0.75871884  0.01838551]
+[[-0.94446029 -0.32862557]
+ [-0.32862557  0.94446029]]
+</code></pre><p>看下这些值是什么意思，让我们把它们作为向量绘制出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">plt.plot(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], <span class="string">'o'</span>, alpha=<span class="number">0.5</span>)</div><div class="line"><span class="keyword">for</span> length, vector <span class="keyword">in</span> zip(pca.explained_variance_, pca.components_):</div><div class="line">    v = vector * <span class="number">3</span> * np.sqrt(length)</div><div class="line">    plt.plot([<span class="number">0</span>, v[<span class="number">0</span>]], [<span class="number">0</span>, v[<span class="number">1</span>]], <span class="string">'-k'</span>, lw=<span class="number">3</span>)</div><div class="line">plt.axis(<span class="string">'equal'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041412.jpg" alt="png"></p>
+<p>注意到一个向量比另外一个向量要长。直觉告诉我们这个方向比另外一个方向更加重要。各个主成分的方差（explained<em>variance</em>）量化了这些方向的重要程度。</p>
+<p>我们可以认为第二重要的成分可以<strong>完全忽略</strong>也不会损失什么信息。我们看一下如果有95%的差异性被被保留的情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">clf = PCA(<span class="number">0.95</span>) <span class="comment"># keep 95% of variance</span></div><div class="line">X_trans = clf.fit_transform(X)</div><div class="line">print(X.shape)</div><div class="line">print(X_trans.shape)</div></pre></td></tr></table></figure>
+<pre><code>(200, 2)
+(200, 1)
+</code></pre><p>通过丢弃5%的差异性，数据被压缩了50%。让我们来看一下压缩后的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">X_new = clf.inverse_transform(X_trans)</div><div class="line">plt.plot(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], <span class="string">'o'</span>, alpha=<span class="number">0.2</span>)</div><div class="line">plt.plot(X_new[:, <span class="number">0</span>], X_new[:, <span class="number">1</span>], <span class="string">'ob'</span>, alpha=<span class="number">0.8</span>)</div><div class="line">plt.axis(<span class="string">'equal'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041429.jpg" alt="png"></p>
+<p>浅色的点是原始数据，而深色的点是投影后的数据。我们可以看到通过丢弃数据集中5%的差异，然后重新投影，最重要的特征能够保留，并且数据也被压缩了50%！</p>
+<h3 id="应用PCA到数字图形上"><a href="#应用PCA到数字图形上" class="headerlink" title="应用PCA到数字图形上"></a>应用PCA到数字图形上</h3><p>刚刚列举的基于二维数据的降维看上去有点抽象，但是在高维数据的可视化中投影和降维是非常有用的。让我们看下如何把PCA应用在我们之前见过的数字的例子上：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</div><div class="line">digits = load_digits()</div><div class="line">X = digits.data</div><div class="line">y = digits.target</div><div class="line">print(X)</div></pre></td></tr></table></figure>
+<pre><code>[[  0.   0.   5. ...,   0.   0.   0.]
+ [  0.   0.   0. ...,  10.   0.   0.]
+ [  0.   0.   0. ...,  16.   9.   0.]
+ ..., 
+ [  0.   0.   1. ...,   6.   0.   0.]
+ [  0.   0.   2. ...,  12.   0.   0.]
+ [  0.   0.  10. ...,  12.   1.   0.]]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pca = PCA(<span class="number">2</span>)  <span class="comment"># project from 64 to 2 dimensions</span></div><div class="line">Xproj = pca.fit_transform(X)</div><div class="line">print(X.shape)</div><div class="line">print(Xproj.shape)</div></pre></td></tr></table></figure>
+<pre><code>(1797, 64)
+(1797, 2)
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">plt.scatter(Xproj[:, <span class="number">0</span>], Xproj[:, <span class="number">1</span>], c=y, edgecolor=<span class="string">'none'</span>, alpha=<span class="number">0.5</span>,</div><div class="line">            cmap=plt.cm.get_cmap(<span class="string">'nipy_spectral'</span>, <span class="number">10</span>))</div><div class="line">plt.colorbar();</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041450.jpg" alt="png"></p>
+<p>我们能从中发现数字之间的关系。本质上，我们把这些数字图形的64维空间摊平了。</p>
+<h3 id="成分（Components）是什么意思？"><a href="#成分（Components）是什么意思？" class="headerlink" title="成分（Components）是什么意思？"></a>成分（Components）是什么意思？</h3><p>PCA是非常有用的降维算法，因为它是<em>特征向量</em>的直观表示。输入数据可以表示为一个向量，以下面的数字为例：</p>
+<p>$$<br>x = [x_1, x_2, x_3 \cdots]<br>$$</p>
+<p>它的真正含义是：</p>
+<p>$$<br>image(x) = x_1 \cdot{\rm (pixel~1)} + x_2 \cdot{\rm (pixel~2)} + x_3 \cdot{\rm (pixel~3)} \cdots<br>$$</p>
+<p>如果我们把像素空间的维度减少到6，我们只能复原部分的图像：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fig_code.figures <span class="keyword">import</span> plot_image_components</div><div class="line"></div><div class="line">sns.set_style(<span class="string">'white'</span>)</div><div class="line">plot_image_components(digits.data[<span class="number">0</span>])</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041550.jpg" alt="png"></p>
+<p>像素级别的表示不是唯一的选择。我们也使用其他的<em>basis函数</em>，像下面的函数：</p>
+<p>$$<br>image(x) = {\rm mean} + x_1 \cdot{\rm (basis~1)} + x_2 \cdot{\rm (basis~2)} + x_3 \cdot{\rm (basis~3)} \cdots<br>$$</p>
+<p>PCA做的事情是对<strong>basis函数</strong>进行优化，以便用少的特征得到近似的估计。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> fig_code.figures <span class="keyword">import</span> plot_pca_interactive</div><div class="line">plot_pca_interactive(digits.data)</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041610.jpg" alt="png"></p>
+<p>这里我们看到我们用了6个成分对输入数字做了近似的估计！</p>
+<p>因此我们从两方面来看待PCA。一方面把它看做<strong>维度约减</strong>，另一方面它能被作为一种<strong>数据压缩</strong>，去掉没用的噪音。通过这种方式，PCA也能被当做<strong>filtering</strong>。</p>
+<h3 id="选择成分的数量"><a href="#选择成分的数量" class="headerlink" title="选择成分的数量"></a>选择成分的数量</h3><p>我们到底要丢弃多少信息呢？我们通过分析<strong>成分方差</strong>来找出答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sns.set()</div><div class="line">pca = PCA().fit(X)</div><div class="line">plt.plot(np.cumsum(pca.explained_variance_ratio_))</div><div class="line">plt.xlabel(<span class="string">'number of components'</span>)</div><div class="line">plt.ylabel(<span class="string">'cumulative explained variance'</span>);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041712.jpg" alt="png"></p>
+<p>这里我们二维的投影损失了非常多的信息，我们需要20种成分来保留90%的差异性。</p>
+<h3 id="用PCA做数据压缩"><a href="#用PCA做数据压缩" class="headerlink" title="用PCA做数据压缩"></a>用PCA做数据压缩</h3><p>我们刚才提到，PCA能作为数据压缩的一种方式。使用小的<code>n_components</code>允许你用主要的向量来表示高维的点。</p>
+<p>这里通过改变成分的数量来观察数字0。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">fig, axes = plt.subplots(<span class="number">8</span>, <span class="number">8</span>, figsize=(<span class="number">8</span>, <span class="number">8</span>))</div><div class="line">fig.subplots_adjust(hspace=<span class="number">0.1</span>, wspace=<span class="number">0.1</span>)</div><div class="line"></div><div class="line"><span class="keyword">for</span> i, ax <span class="keyword">in</span> enumerate(axes.flat):</div><div class="line">    pca = PCA(i + <span class="number">1</span>).fit(X)</div><div class="line">    im = pca.inverse_transform(pca.transform(X[<span class="number">20</span>:<span class="number">21</span>]))</div><div class="line"></div><div class="line">    ax.imshow(im.reshape((<span class="number">8</span>, <span class="number">8</span>)), cmap=<span class="string">'binary'</span>)</div><div class="line">    ax.text(<span class="number">0.95</span>, <span class="number">0.05</span>, <span class="string">'n = &#123;0&#125;'</span>.format(i + <span class="number">1</span>), ha=<span class="string">'right'</span>,</div><div class="line">            transform=ax.transAxes, color=<span class="string">'green'</span>)</div><div class="line">    ax.set_xticks([])</div><div class="line">    ax.set_yticks([])</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041728.jpg" alt="png"></p>
+<p>让我们通过IPython的<code>interact</code>功能来看下当成分数量（n_components）变化时数字的效果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> IPython.html.widgets <span class="keyword">import</span> interact</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_digits</span><span class="params">(n_components)</span>:</span></div><div class="line">    fig = plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</div><div class="line">    plt.subplot(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, frameon=<span class="keyword">False</span>, xticks=[], yticks=[])</div><div class="line">    nside = <span class="number">10</span></div><div class="line">    </div><div class="line">    pca = PCA(n_components).fit(X)</div><div class="line">    Xproj = pca.inverse_transform(pca.transform(X[:nside ** <span class="number">2</span>]))</div><div class="line">    Xproj = np.reshape(Xproj, (nside, nside, <span class="number">8</span>, <span class="number">8</span>))</div><div class="line">    total_var = pca.explained_variance_ratio_.sum()</div><div class="line">    </div><div class="line">    im = np.vstack([np.hstack([Xproj[i, j] <span class="keyword">for</span> j <span class="keyword">in</span> range(nside)])</div><div class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> range(nside)])</div><div class="line">    plt.imshow(im)</div><div class="line">    plt.grid(<span class="keyword">False</span>)</div><div class="line">    plt.title(<span class="string">"n = &#123;0&#125;, variance = &#123;1:.2f&#125;"</span>.format(n_components, total_var),</div><div class="line">                 size=<span class="number">18</span>)</div><div class="line">    plt.clim(<span class="number">0</span>, <span class="number">16</span>)</div><div class="line">    </div><div class="line">interact(plot_digits, n_components=[<span class="number">1</span>, <span class="number">64</span>], nside=[<span class="number">1</span>, <span class="number">8</span>]);</div></pre></td></tr></table></figure>
+<p><img src="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-21-041753.jpg" alt="png"></p>
+<hr>
+<p><a href="https://github.com/yummybian/sklearn_pycon2015_zh.git" target="_blank" rel="external">Jupyter实现</a></p>
+<hr>
+<p><a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png"></a><br>本作品采用<a rel="external" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议</a>进行许可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/12/03.2-Regression-Forests-zh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1766,7 +2235,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
