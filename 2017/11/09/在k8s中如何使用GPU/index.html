@@ -117,21 +117,21 @@
 
 
 
-<meta name="description" content="部署All In One K8s，可以参考这位老兄文章。 准备工作： 安装NVIDIA驱动，安装完成后运行nvidia-docker-plugin来确认驱动是否被正确的加载。 查看nvidia device信息1curl -s localhost:3476/docker/cli   不通过nvidia-docker启动GPU容器手动指定驱动路径，然后挂载驱动和CUDA库123export DRIV">
+<meta name="description" content="部署All In One K8s，可以参考这位老兄文章。 此文章只适用于nvidia-docker 1.0 准备工作： 安装NVIDIA驱动，安装完成后运行nvidia-docker-plugin来确认驱动是否被正确的加载。 查看nvidia device信息1curl -s localhost:3476/docker/cli   不通过nvidia-docker启动GPU容器手动指定驱动路径，然">
 <meta name="keywords" content="K8s,GPU,Docker,Nvidia">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在k8s中如何使用GPU">
 <meta property="og:url" content="http://yoursite.com/2017/11/09/在k8s中如何使用GPU/index.html">
 <meta property="og:site_name" content="Bin&#39;s Blog">
-<meta property="og:description" content="部署All In One K8s，可以参考这位老兄文章。 准备工作： 安装NVIDIA驱动，安装完成后运行nvidia-docker-plugin来确认驱动是否被正确的加载。 查看nvidia device信息1curl -s localhost:3476/docker/cli   不通过nvidia-docker启动GPU容器手动指定驱动路径，然后挂载驱动和CUDA库123export DRIV">
+<meta property="og:description" content="部署All In One K8s，可以参考这位老兄文章。 此文章只适用于nvidia-docker 1.0 准备工作： 安装NVIDIA驱动，安装完成后运行nvidia-docker-plugin来确认驱动是否被正确的加载。 查看nvidia device信息1curl -s localhost:3476/docker/cli   不通过nvidia-docker启动GPU容器手动指定驱动路径，然">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-143028.png">
 <meta property="og:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-140659.png">
 <meta property="og:image" content="https://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png">
-<meta property="og:updated_time" content="2017-11-09T10:07:45.000Z">
+<meta property="og:updated_time" content="2017-11-21T03:31:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在k8s中如何使用GPU">
-<meta name="twitter:description" content="部署All In One K8s，可以参考这位老兄文章。 准备工作： 安装NVIDIA驱动，安装完成后运行nvidia-docker-plugin来确认驱动是否被正确的加载。 查看nvidia device信息1curl -s localhost:3476/docker/cli   不通过nvidia-docker启动GPU容器手动指定驱动路径，然后挂载驱动和CUDA库123export DRIV">
+<meta name="twitter:description" content="部署All In One K8s，可以参考这位老兄文章。 此文章只适用于nvidia-docker 1.0 准备工作： 安装NVIDIA驱动，安装完成后运行nvidia-docker-plugin来确认驱动是否被正确的加载。 查看nvidia device信息1curl -s localhost:3476/docker/cli   不通过nvidia-docker启动GPU容器手动指定驱动路径，然">
 <meta name="twitter:image" content="http://oyows3qd4.bkt.clouddn.com/blog/2017-11-08-143028.png">
 
 
@@ -427,6 +427,7 @@
 
       
         <p>部署<strong>All In One</strong> K8s，可以参考这位老兄<a href="http://stuartingram.com/2016/08/31/installing-kubernetes-on-ubuntu-14-04/" target="_blank" rel="external">文章</a>。</p>
+<p><strong>此文章只适用于nvidia-docker 1.0</strong></p>
 <h2 id="准备工作："><a href="#准备工作：" class="headerlink" title="准备工作："></a>准备工作：</h2><ul>
 <li>安装NVIDIA驱动，安装完成后运行<code>nvidia-docker-plugin</code>来确认驱动是否被正确的加载。</li>
 <li>查看nvidia device信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -s localhost:3476/docker/cli</div></pre></td></tr></table></figure>
